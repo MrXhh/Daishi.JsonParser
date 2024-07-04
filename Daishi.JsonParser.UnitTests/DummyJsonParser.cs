@@ -12,19 +12,22 @@ namespace Daishi.JsonParser.UnitTests {
         public DummyJsonParser(Stream json, string jsonPropertyName) : base(json, jsonPropertyName) {}
 
         protected override void Build(DummyParsable parsable, JsonTextReader reader) {
-            if (reader.Value != null && reader.Value.Equals(@"id")) {
+            if (reader.Value == null)
+                return;
+
+            if (reader.Value.Equals(@"id")) {
                 reader.Read();
                 parsable.Id = (string) reader.Value;
             }
-            else if (reader.Value != null && reader.Value.Equals(@"duration")) {
+            else if (reader.Value.Equals(@"duration")) {
                 reader.Read();
                 parsable.Duration = Convert.ToInt32(reader.Value);
             }
-            else if (reader.Value != null && reader.Value.Equals(@"title")) {
+            else if (reader.Value.Equals(@"title")) {
                 reader.Read();
                 parsable.Title = (string) reader.Value;
             }
-            else if (reader.Value != null && reader.Value.Equals(@"levels")) {
+            else if (reader.Value.Equals(@"levels")) {
                 do {
                     reader.Read();
                 } while (!reader.TokenType.Equals(JsonToken.PropertyName) && !reader.TokenType.Equals(JsonToken.None));
